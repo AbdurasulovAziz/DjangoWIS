@@ -9,9 +9,12 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+from dotenv import dotenv_values
 import logging
 import os
 from pathlib import Path
+
+dotenv = dotenv_values('.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-c21vjo8dut#nomxjm(%2(+j(t^!gu=7yy%(=*@@obwao+_i1*l'
+SECRET_KEY = dotenv.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,13 +80,15 @@ WSGI_APPLICATION = 'WISDjango.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {'default': {
-    'ENGINE': 'django.db.backends.postgresql',
-    'NAME': 'postgres',
-    'USER': 'postgres',
-    'PASSWORD': 'admin',
-    'HOST': 'localhost',
-    'PORT': 5432}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': dotenv.get('DB_NAME'),
+        'USER': dotenv.get('DB_USER'),
+        'PASSWORD': dotenv.get('DB_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': 5432
+    }
 }
 
 # Password validation
