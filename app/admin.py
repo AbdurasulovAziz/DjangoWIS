@@ -1,6 +1,18 @@
 from django.contrib import admin
-from .models import User
+
+from .models import User, Profile
 # Register your models here.
 
 
-admin.site.register(User)
+
+class ProfileAdmin(admin.TabularInline):
+    model = Profile
+    extra = 0
+
+
+class UserAdmin(admin.ModelAdmin):
+    inlines = [ProfileAdmin]
+
+
+
+admin.site.register(User, UserAdmin)
