@@ -40,3 +40,42 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.email
+
+
+class Dish(models.Model):
+    name = models.CharField()
+    price = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        abstract = True
+
+
+class Sause(Dish):
+
+    def __str__(self):
+        return self.name
+
+
+class FoodMenu(Dish):
+    TYPE_DISH = (
+        ('Пицца', 'Пицца'),
+        ('Суши', 'Суши'),
+        ('Плов', 'Плов'),
+        ('Шашлык', 'Шашлык'),
+    )
+    cook_time = models.IntegerField()
+    category = models.CharField(choices=TYPE_DISH)
+    sause = models.ForeignKey(Sause, on_delete=models.CASCADE)
+
+
+class DrinkMenu(Dish):
+    TYPE_DRINK = (
+        ('Горячие напитки', 'Горячие напитки'),
+        ('Холодные напитки', 'Холодные напитки'),
+        ('Алкогольные напитки', 'Алкогольные напитки'),
+    )
+    category = models.CharField(choices=TYPE_DRINK)
+
