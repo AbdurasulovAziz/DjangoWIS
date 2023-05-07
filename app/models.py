@@ -8,6 +8,8 @@ from django.utils import timezone
 from django.db import models
 
 from .manager import CustomUserManager, NonAlchogolicDrinkManager
+from .validators import birth_date_validation
+from .manager import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -30,7 +32,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     phone = models.CharField('Phone', validators=[RegexValidator('[+]\d+$')], blank=True)
-    birth_day = models.DateField('Birth day', blank=True, null=True)
+    birth_day = models.DateField('Birth day', validators=[birth_date_validation], blank=True, null=True)
     region = models.CharField('Region', blank=True)
 
     @property
