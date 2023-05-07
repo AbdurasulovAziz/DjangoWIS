@@ -7,7 +7,7 @@ from django.core.validators import RegexValidator
 from django.utils import timezone
 from django.db import models
 
-from .manager import CustomUserManager
+from .manager import CustomUserManager, NonAlchogolicDrinkManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -71,6 +71,8 @@ class FoodMenu(Dish):
     sause = models.ForeignKey(Sause, on_delete=models.CASCADE)
 
 
+
+
 class DrinkMenu(Dish):
     TYPE_DRINK = (
         ('Горячие напитки', 'Горячие напитки'),
@@ -78,4 +80,9 @@ class DrinkMenu(Dish):
         ('Алкогольные напитки', 'Алкогольные напитки'),
     )
     category = models.CharField(choices=TYPE_DRINK)
+
+    objects = models.Manager()
+    nonalcho = NonAlchogolicDrinkManager()
+
+
 
