@@ -9,7 +9,6 @@ from django.db import models
 
 from .manager import CustomUserManager, NonAlchogolicDrinkManager
 from .validators import birth_date_validation
-from .manager import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
