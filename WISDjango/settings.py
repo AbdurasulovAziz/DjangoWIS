@@ -167,3 +167,7 @@ LOGGING = {
         },
     },
 }
+
+
+LOGIN_REDIRECT_URL = '/accounts/login'
+LOGOUT_REDIRECT_URL = '/accounts/login'

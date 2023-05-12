@@ -1,0 +1,12 @@
+{% extends 'registration/login.html' %}
+{% load i18n %}
+
+
+{% block content %}
+    <form action="{% url 'registration' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Отправить</button>
+    </form>
+
+{% endblock %}
