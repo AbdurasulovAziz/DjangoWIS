@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+{% load i18n %}
+
+
+{% block content %}
+    Мы отправили письмо с кодом регистрации на ваш Email адрес <br>
+    Проверьте вашу почту
+
+    <p><a href="{% url 'home' %}">На главную</a></p>
+{% endblock %}
