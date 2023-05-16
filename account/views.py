@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, views
 from django.core.mail import EmailMessage
 
 from django.http import HttpResponseRedirect, HttpResponse
@@ -55,3 +55,7 @@ class UserRegistrationVerifyView(View):
 
         else:
             return HttpResponse('<h1>Ссылка не действительна</h1>')
+
+
+# class UserPasswordResetView(views.PasswordResetView):
+#     template_name = 'registration/password_reset_email.html'
