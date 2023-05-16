@@ -170,8 +170,8 @@ LOGGING = {
 }
 
 
-LOGIN_REDIRECT_URL = '/accounts/login'
-LOGOUT_REDIRECT_URL = '/accounts/login'
+LOGIN_REDIRECT_URL = '/auth/login'
+LOGOUT_REDIRECT_URL = '/auth/login'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

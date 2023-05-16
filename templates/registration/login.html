@@ -4,7 +4,8 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <h1>{% trans "Hello" %}</h1>
+        <h1>{% trans "Hello" %} {{ request.user }}</h1>
+
     {% else %}
     <form action="." method="post">
         {% csrf_token %}

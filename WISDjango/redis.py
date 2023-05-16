@@ -1,3 +1,5 @@
+import uuid
+
 import redis
 from random import randint
 
@@ -5,17 +7,14 @@ from random import randint
 class Redis(redis.Redis):
 
     def create_user_registration_code(self, email):
-        code = randint(10000, 99999)
+        code = str(uuid.uuid4())
         self.set(email, code)
-        self.expire(email, 600)
+        self.expire(email, 900)
         return code
 
-    def check_user_registration_code(self, email, code):
-        if not self.get(email):
-            return "Ваш код истек или не существует. Попробуйте пройти повторную регистрацию"
-
-        if self.get(email) != code:
-            return "Код невереный"
+    def check_user_registration_code(self, email, activation_key):
+        if not self.exists(email) or self.get(email) != activation_key:
+            return False
 
         return True
 
