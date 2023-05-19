@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+
+{% block content %}
+     <h1>USER PROFILE</h1>
+
+    <p>Email: {{ customuser }}</p>
+    <p>Имя: {{ customuser.first_name }}</p>
+    <p>Фамилия: {{ customuser.last_name }}</p>
+    <p>Номер телефона: {{ customuser.profile.phone }}</p>
+    <p>День рождения: {{ customuser.profile.birth_day }}</p>
+    <p>Регион проживания: {{ customuser.profile.region }}</p>
+{% endblock %}

@@ -5,10 +5,11 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.views import View
 from django.urls import reverse
-
+from django.views.generic import DetailView
 
 from WISDjango.redis import RedisDB
 from account.forms import RegistrationForm
+from account.models import Profile
 
 
 # Create your views here.
@@ -53,9 +54,13 @@ class UserRegistrationVerifyView(View):
             self.UserModel.objects.filter(email=user.email).update(if_verified=True)
             return HttpResponseRedirect(reverse('login'))
 
-        else:
-            return HttpResponse('<h1>Ссылка не действительна</h1>')
+        return HttpResponse('<h1>Ссылка не действительна</h1>')
 
 
-# class UserPasswordResetView(views.PasswordResetView):
-#     template_name = 'registration/password_reset_email.html'
+class UserProfileView(DetailView):
+
+    model = get_user_model()
+    template_name = 'account/profile_detail.html'
+    context_object_name = 'customuser'
+    slug_field = 'email'
+    slug_url_kwarg = 'email'

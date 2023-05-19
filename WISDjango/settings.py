@@ -170,7 +170,7 @@ LOGGING = {
 }
 
 
-LOGIN_REDIRECT_URL = '/auth/login'
+LOGIN_REDIRECT_URL = '/app/home'
 LOGOUT_REDIRECT_URL = '/auth/login'
 
 
