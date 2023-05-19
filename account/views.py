@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.views.generic import DetailView
 
 from WISDjango.redis import RedisDB
-from account.forms import RegistrationForm
+from account.forms import RegistrationForm, UserProfileForm
 from account.models import Profile
 
 
@@ -57,10 +57,39 @@ class UserRegistrationVerifyView(View):
         return HttpResponse('<h1>Ссылка не действительна</h1>')
 
 
-class UserProfileView(DetailView):
-
+class UserProfileAbstractView(DetailView):
     model = get_user_model()
     template_name = 'account/profile_detail.html'
     context_object_name = 'customuser'
     slug_field = 'email'
     slug_url_kwarg = 'email'
+
+
+class UserProfileView(UserProfileAbstractView):
+    pass
+
+
+class UserProfileChangeView(UserProfileAbstractView):
+    template_name = 'account/profile_detail_change.html'
+    User = get_user_model()
+
+    def get(self, request, *args, **kwargs):
+        user_instance = self.User.objects.get(email=kwargs.get('email'))
+
+        form = UserProfileForm(instance=user_instance)
+        form.initial['phone'] = user_instance.profile.phone
+        form.initial['birth_day'] = user_instance.profile.birth_day
+        form.initial['region'] = user_instance.profile.region
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = UserProfileForm(
+            request.POST,
+            instance=self.User.objects.get(email=kwargs.get('email'))
+        )
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('profile', args=[request.user.email]))
+
+
+
