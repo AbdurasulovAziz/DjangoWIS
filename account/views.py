@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.views import View
 from django.urls import reverse
 
-
+from WISDjango import settings
 from WISDjango.redis import RedisDB
 from account.forms import RegistrationForm
 
@@ -27,10 +27,11 @@ class UserRegistrationView(View):
         if form.is_valid():
             user = form.save()
             code = RedisDB.create_user_registration_code(user.email)
-            if EmailMessage("UserCode",
-                            f"http://127.0.0.1:8000/account/verify/{user.email}/{code}",
-                            to=["azizabdurasulov2002@gmail.com"]
-                            ).send():
+            if EmailMessage(
+                    "UserCode",
+                    f"{settings.EMAIL_VERIFICATION_URL}/{user.email}/{code}",
+                    to=["azizabdurasulov2002@gmail.com"] #TODO поменять на user.email
+            ).send():
 
                 return render(request, 'account/registration_confirm.html')
 

@@ -176,7 +176,9 @@ LOGOUT_REDIRECT_URL = '/auth/login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'azizabdurasulov2002@gmail.com'
-EMAIL_HOST_PASSWORD = 'lkjobglkyfvmvxgp'
+EMAIL_PORT = dotenv.get('EMAIL_PORT')
+EMAIL_USE_TLS = dotenv.get('EMAIL_USE_TLS')
+EMAIL_HOST_USER = dotenv.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = dotenv.get('EMAIL_HOST_PASSWORD')
+
+EMAIL_VERIFICATION_URL = dotenv.get('EMAIL_VERIFICATION_URL')
