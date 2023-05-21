@@ -1,11 +1,18 @@
 from django.contrib import admin
-
-from .models import *
-
+from app import models
 # Register your models here.
 
 
-admin.site.register(FoodMenu)
-admin.site.register(Sause)
-admin.site.register(DrinkMenu)
+@admin.register(models.Food)
+class FoodAdmin(admin.ModelAdmin):
+    pass
 
+
+@admin.register(models.Drink)
+class DrinkAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.Sauce)
+class SauceAdmin(admin.ModelAdmin):
+    pass
