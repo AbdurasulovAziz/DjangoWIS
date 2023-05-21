@@ -2,10 +2,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 
-from app.managers import NonAlcoholicDrinkManager
 
-
-class Dish(models.Model):
+class DishAbstractModel(models.Model):
     name = models.CharField()
     price = models.IntegerField()
 
@@ -16,35 +14,36 @@ class Dish(models.Model):
         abstract = True
 
 
-class Sause(Dish):
-
-    def __str__(self):
-        return self.name
+class Sauce(DishAbstractModel):
+    pass
 
 
-class FoodMenu(Dish):
+class Dessert(DishAbstractModel):
+    pass
+
+
+class IceCream(DishAbstractModel):
+    pass
+
+
+class Food(DishAbstractModel):
     TYPE_DISH = (
-        ('Пицца', 'Пицца'),
-        ('Суши', 'Суши'),
-        ('Плов', 'Плов'),
-        ('Шашлык', 'Шашлык'),
+        ('Burger', 'Burger'),
+        ('Twister', 'Twister'),
+        ('Bucket', 'Bucket'),
     )
-    cook_time = models.IntegerField()
     category = models.CharField(choices=TYPE_DISH)
-    sause = models.ForeignKey(Sause, on_delete=models.CASCADE)
+    spicy = models.BooleanField(default=False)
 
 
-class DrinkMenu(Dish):
+class Drink(DishAbstractModel):
     TYPE_DRINK = (
-        ('Горячие напитки', 'Горячие напитки'),
-        ('Холодные напитки', 'Холодные напитки'),
-        ('Алкогольные напитки', 'Алкогольные напитки'),
+        ('Cold', 'Cold Drinks'),
+        ('Hot', 'Hot Drinks'),
+        ('Milkshake', 'Milkshakes')
     )
+
+    liter = models.FloatField()
     category = models.CharField(choices=TYPE_DRINK)
-
-    objects = models.Manager()
-    nonalco = NonAlcoholicDrinkManager()
-
-
 
 
