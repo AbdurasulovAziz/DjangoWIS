@@ -20,7 +20,7 @@ dotenv = dotenv_values('.env')
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-AUTH_USER_MODEL = 'app.CustomUser'
+AUTH_USER_MODEL = 'account.CustomUser'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app.apps.AppConfig',
+    'account.apps.AccountConfig',
 ]
 
 MIDDLEWARE = [
@@ -167,3 +168,17 @@ LOGGING = {
         },
     },
 }
+
+
+LOGIN_REDIRECT_URL = '/auth/login'
+LOGOUT_REDIRECT_URL = '/auth/login'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = dotenv.get('EMAIL_PORT')
+EMAIL_USE_TLS = dotenv.get('EMAIL_USE_TLS')
+EMAIL_HOST_USER = dotenv.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = dotenv.get('EMAIL_HOST_PASSWORD')
+
+EMAIL_VERIFICATION_URL = dotenv.get('EMAIL_VERIFICATION_URL')
