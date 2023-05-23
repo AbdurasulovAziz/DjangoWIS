@@ -2,9 +2,6 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 
-from app.managers import UnstopListDishManager
-
-
 class PriceMixinFieldModel(models.Model):
     price = models.IntegerField(default=0)
 
