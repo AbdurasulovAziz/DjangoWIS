@@ -31,7 +31,7 @@ class UserProfileForm(forms.ModelForm):
         profile.phone = self.cleaned_data['phone']
         profile.birth_day = self.cleaned_data['birth_day']
         profile.region = self.cleaned_data['region']
-        instance.save()
+        profile.save()
 
 
 

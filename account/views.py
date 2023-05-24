@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model, views
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.mail import EmailMessage
 
 from django.http import HttpResponseRedirect, HttpResponse
@@ -6,7 +7,7 @@ from django.shortcuts import render
 from django.views import View
 from django.urls import reverse
 
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView, ListView
 from WISDjango import settings
 from WISDjango.redis import RedisDB
 from account.forms import RegistrationForm, UserProfileForm
@@ -16,7 +17,6 @@ from account.models import Profile
 # Create your views here.
 
 class UserRegistrationView(View):
-
     UserModel = get_user_model()
     template_path = 'account/registration.html'
 
@@ -32,9 +32,8 @@ class UserRegistrationView(View):
             if EmailMessage(
                     "UserCode",
                     f"{settings.EMAIL_VERIFICATION_URL}/{user.email}/{code}",
-                    to=["azizabdurasulov2002@gmail.com"] #TODO поменять на user.email
+                    to=["azizabdurasulov2002@gmail.com"]  # TODO поменять на user.email
             ).send():
-
                 return render(request, 'account/registration_confirm.html')
 
         else:
@@ -43,7 +42,6 @@ class UserRegistrationView(View):
 
 
 class UserRegistrationVerifyView(View):
-
     UserModel = get_user_model()
 
     def get(self, request, *args, **kwargs):
@@ -59,24 +57,19 @@ class UserRegistrationVerifyView(View):
         return HttpResponse('<h1>Ссылка не действительна</h1>')
 
 
-class UserProfileAbstractView(DetailView):
-    model = get_user_model()
-    template_name = 'account/profile_detail.html'
-    context_object_name = 'customuser'
-    slug_field = 'email'
-    slug_url_kwarg = 'email'
+class UserProfileView(View):
+
+    def get(self, request, *args, **kwargs):
+        user = get_user_model().objects.get(email=request.user.email)
+        return render(request, 'account/profile_detail.html', {'user': user})
 
 
-class UserProfileView(UserProfileAbstractView):
-    pass
-
-
-class UserProfileChangeView(UserProfileAbstractView):
+class UserProfileChangeView(View):
     template_name = 'account/profile_detail_change.html'
     User = get_user_model()
 
     def get(self, request, *args, **kwargs):
-        user_instance = self.User.objects.get(email=kwargs.get('email'))
+        user_instance = self.User.objects.get(email=request.user.email)
 
         form = UserProfileForm(instance=user_instance)
         form.initial['phone'] = user_instance.profile.phone
@@ -87,11 +80,8 @@ class UserProfileChangeView(UserProfileAbstractView):
     def post(self, request, *args, **kwargs):
         form = UserProfileForm(
             request.POST,
-            instance=self.User.objects.get(email=kwargs.get('email'))
+            instance=self.User.objects.get(email=request.user.email)
         )
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('profile', args=[request.user.email]))
-
-
-
+            return HttpResponseRedirect(reverse('profile'))
