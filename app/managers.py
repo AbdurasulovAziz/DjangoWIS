@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class NonAlcoholicDrinkManager(models.Manager):
+class UnstopListDishManager(models.Manager):
 
     def get_queryset(self):
-        return super().get_queryset().exclude(category='Алкогольные напитки')
+        return super().get_queryset().filter(on_stop=False)
