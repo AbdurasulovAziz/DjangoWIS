@@ -1,9 +1,20 @@
 from django.contrib import admin
+from django.db.models import F
+from django.http import HttpResponseRedirect
+from django.urls import path, reverse
+
 from app import models
 from app.models_actions import put_on_stop_list, remove_from_stop_list
 
 
 # Register your models here.
+
+def my_view(request, object_id): #TODO плохая запись
+    next_object_id = models.Food.objects.filter(id__gt=object_id).first()
+    if next_object_id:
+        return HttpResponseRedirect(reverse('admin:app_food_change', args=(next_object_id.id,)))
+    else:
+        return HttpResponseRedirect(reverse('admin:app_food_changelist'))
 
 
 @admin.register(models.Food)
@@ -12,6 +23,16 @@ class FoodAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_filter = ('category', 'spicy', 'on_stop',)
     actions = (put_on_stop_list, remove_from_stop_list,)
+    ordering = ('id',)
+    change_form_template = 'admin/custom_change_form.html'
+
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path('<int:object_id>/next/', my_view, name='app_food_next')
+        ]
+
+        return my_urls + urls
 
 
 class DrinkAdminFilter(admin.SimpleListFilter):

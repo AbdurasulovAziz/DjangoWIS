@@ -9,3 +9,4 @@ def put_on_stop_list(modeladmin, request, queryset):
 @action(description='Remove from stop list')
 def remove_from_stop_list(modeladmin, request, queryset):
     queryset.update(on_stop=False)
+
