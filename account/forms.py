@@ -8,7 +8,7 @@ from account.models import Profile
 class RegistrationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
-        fields = ('email',)
+        fields = ("email",)
 
 
 class RegistrationCodeVerifyForm(forms.Form):
@@ -22,16 +22,13 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ('first_name', 'last_name', 'phone', 'birth_day', 'region')
+        fields = ("first_name", "last_name", "phone", "birth_day", "region")
 
     def save(self, commit=True):
         instance = super().save(commit=False)
 
         profile = instance.profile
-        profile.phone = self.cleaned_data['phone']
-        profile.birth_day = self.cleaned_data['birth_day']
-        profile.region = self.cleaned_data['region']
+        profile.phone = self.cleaned_data["phone"]
+        profile.birth_day = self.cleaned_data["birth_day"]
+        profile.region = self.cleaned_data["region"]
         profile.save()
-
-
-
