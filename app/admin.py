@@ -80,16 +80,17 @@ class DessertAdmin(admin.ModelAdmin):
 
 @admin.register(models.BoxMix)
 class BoxMixAdmin(admin.ModelAdmin):
-    list_display = ('name', 'food', 'drink', 'sauce', 'dessert', 'on_stop', '_count_price')
+    list_display = ('name', 'box_food', 'box_drink', 'box_sauce', 'box_dessert', 'price', 'on_stop')
     actions = (put_on_stop_list, remove_from_stop_list,)
-    readonly_fields = ('_count_price',)
+    readonly_fields = ('price',)
     search_fields = ('name', 'food')
 
-    def _count_price(self, obj: models.BoxMix):
-        return sum([
-            obj.food.price,
-            obj.drink.price,
-            obj.sauce.price,
-            obj.dessert.price
-        ]) / 100 * 85
 
+class OrderItemAdmin(admin.TabularInline):
+    model = models.OrderItem
+    extra = 0
+
+
+@admin.register(models.Order)
+class OrderAdmin(admin.ModelAdmin):
+    inlines = [OrderItemAdmin]
