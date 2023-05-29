@@ -14,8 +14,8 @@ from account.validators import birth_date_validation
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField("email address", unique=True)
-    first_name = models.CharField("first name", blank=True)
-    last_name = models.CharField("last_name", blank=True)
+    first_name = models.CharField("First name", blank=True)
+    last_name = models.CharField("Last name", blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)

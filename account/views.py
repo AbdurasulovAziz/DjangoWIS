@@ -37,8 +37,6 @@ class UserRegistrationView(View):
             ).send():
                 return render(request, "account/registration_confirm.html")
 
-        else:
-            form = RegistrationForm()
         return render(request, self.template_path, {"form": form})
 
 

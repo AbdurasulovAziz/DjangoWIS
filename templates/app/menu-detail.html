@@ -1,0 +1,8 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+    {% for element in data.values %}
+        <p>{{ element }}</p>
+    {% endfor %}
+{% endblock %}

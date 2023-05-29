@@ -1,11 +1,21 @@
 {% extends 'main.html' %}
 
+{% block title %}Profile Change{% endblock %}
+
 {% block content %}
-    <h1>USER PROFILE</h1>
-    <form action="." method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Update Profile</button>
-    </form>
+    <div class="col-12 d-flex justify-content-center align-items-center" style="height: 100vh">
+        <form action="." method="post" class="text-center shadow-lg border border-dark py-4 rounded col-5">
+            {% csrf_token %}
+            <h3>User Profile</h3>
+            {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label_tag }}</label>
+                <p>{{ field }}</p>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+
+        </form>
+    </div>
 
 {% endblock %}

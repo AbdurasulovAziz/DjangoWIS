@@ -7,6 +7,7 @@ from django.db import models
 class Dish(models.Model):
     name = models.CharField()
     price = models.IntegerField(default=0)
+    description = models.TextField()
     on_stop = models.BooleanField(default=False)
 
     def __str__(self):

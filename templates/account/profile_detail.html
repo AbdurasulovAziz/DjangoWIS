@@ -1,13 +1,21 @@
 {% extends 'main.html' %}
 
-{% block content %}
-     <h1>USER PROFILE</h1>
+{% block title %}Profile{% endblock %}
 
-    <p>Email: {{ user }}</p>
-    <p>Имя: {{ user.first_name }}</p>
-    <p>Фамилия: {{ user.last_name }}</p>
-    <p>Номер телефона: {{ user.profile.phone }}</p>
-    <p>День рождения: {{ user.profile.birth_day }}</p>
-    <p>Регион проживания: {{ user.profile.region }}</p>
-    <a href="{% url 'profile-change' %}">Изменить профиль</a>
+{% block content %}
+    <div class="col-12 d-flex justify-content-center align-items-center" style="height: 100vh">
+        <div class="col-4 border border-dark rounded py-4 d-flex justify-content-center">
+            <div class="col-10">
+                <h2 class="d-flex justify-content-center pb-3">USER PROFILE</h2>
+
+                <p>Email: {{ user }}</p>
+                <p>First name: {{ user.first_name }}</p>
+                <p>Last name: {{ user.last_name }}</p>
+                <p>Phone: {{ user.profile.phone }}</p>
+                <p>Birth day: {{ user.profile.birth_day }}</p>
+                <p>Region: {{ user.profile.region }}</p>
+                <a href="{% url 'profile-change' %}" class="btn btn-primary">Change Profile</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
