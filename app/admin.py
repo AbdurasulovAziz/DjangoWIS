@@ -130,11 +130,21 @@ class BoxMixAdmin(admin.ModelAdmin):
     search_fields = ("name", "food")
 
 
-class OrderItemAdmin(admin.TabularInline):
+class OrderItemTabular(admin.TabularInline):
     model = models.OrderItem
-    extra = 0
+    extra = 1
+    readonly_fields = (
+        "dish_price",
+        "total_price",
+    )
+
+    def dish_price(self, obj):
+        return obj.dish.price
+
+    def total_price(self, obj):
+        return obj.dish.price * obj.count
 
 
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
-    inlines = [OrderItemAdmin]
+    inlines = [OrderItemTabular]

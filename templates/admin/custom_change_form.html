@@ -2,5 +2,7 @@
 
 {% block submit_buttons_bottom %}
     {{ block.super }}
-    <a href="../next/">Next</a>     <!-- TODO плохая запись-->
+    {% if object_id %}
+        <a href="{% url 'admin:app_food_next' object_id %}"><h2>Next</h2></a>
+    {% endif %}
 {% endblock %}

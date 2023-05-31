@@ -71,7 +71,10 @@ class BoxMix(Dish):
 
 
 class Order(models.Model):
+    STATUS = (("Cart", "In Cart"), ("Sent", "Sent"))
+
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    status = models.CharField(choices=STATUS, default="Cart")
 
     def __str__(self):
         return f"{self.user}"
@@ -80,4 +83,4 @@ class Order(models.Model):
 class OrderItem(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    count = models.IntegerField()
+    count = models.IntegerField(default=0)

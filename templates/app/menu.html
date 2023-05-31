@@ -2,32 +2,33 @@
 {% load custom_tags %}
 
 {% block content %}
-    <header>
-        <nav>
-            <h1>KFC </h1>
-            {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}">Мой Профиль</a>
-            {% else %}
-                <a href="{% url 'login' %}">Войти</a>
-                <a href="{% url 'registration' %}">Зарегистрироваться</a>
-            {% endif %}
-        </nav>
-    </header>
-    <aside>
-        <a href="{% url 'food-page'%}">Food</a>
-        <a href="{% url 'drink-page'%}">Drinks</a>
-        <a href="{% url 'dessert-page'%}">Desserts</a>
-        <a href="{% url 'sauce-page'%}">Sauces</a>
-        <a href="{% url 'boxmix-page'%}">BoxMix</a>
+    <aside class="d-flex justify-content-between">
+        <a class="text-decoration-none mt-3" href="{% url 'food-page'%}">Food</a>
+        <a class="text-decoration-none mt-3" href="{% url 'drink-page'%}">Drinks</a>
+        <a class="text-decoration-none mt-3" href="{% url 'dessert-page'%}">Desserts</a>
+        <a class="text-decoration-none mt-3" href="{% url 'sauce-page'%}">Sauces</a>
+        <a class="text-decoration-none mt-3" href="{% url 'boxmix-page'%}">BoxMix</a>
     </aside>
-    <section style="display: flex">
-        {% for element in data %}
-            <div>
-                {% for key, value in element.items %}
-                    <p>{{ value }}</p>
-                {% endfor %}
-            </div>
+    <section class="h-100 d-flex flex-wrap text-center mt-3 py-5">
+     {% for element in data %}
+            <form style="max-height: 300px; height: 100%" action="{% url 'cart-add' element.id %}" method="post" class="col-3 border border-dark rounded d-flex flex-column justify-content-between">
+                {% csrf_token %}
+                <h2>
+                    <a href="{% dish_url element|get_class_name element.id %}" class="text-decoration-none">{{ element.name }}</a><br>
+                </h2>
+                <div style="overflow:hidden"
+                     class="mx-3 flex-grow-1">
+                    {{ element.description }}
+                </div>
+                {{ element.price }}<br>
+                {% if user.is_authenticated and element.on_stop is False%}
+                <div>
+                        {{ form.count }}
+                        <button type="submit" class="btn btn-success my-2">В корзину</button>
+                </div>
+                {% endif %}
+            </form>
+
         {% endfor %}
     </section>
-
 {% endblock %}

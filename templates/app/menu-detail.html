@@ -3,6 +3,8 @@
 
 {% block content %}
     {% for element in data.values %}
-        <p>{{ element }}</p>
+        <div class="d-flex text-center">
+            <p>{{ element }}</p>
+        </div>
     {% endfor %}
 {% endblock %}

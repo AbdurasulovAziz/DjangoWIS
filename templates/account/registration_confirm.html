@@ -1,12 +1,13 @@
 {% extends 'main.html' %}
 {% load i18n %}
 
+{% block header %}{% endblock %}
 
 {% block content %}
     <div class="col-12 d-flex justify-content-center align-items-center" style="height: 100vh">
         <div>
             <p>Мы отправили письмо с ссылкой для подтверждения регистрации на ваш Email адрес <br>
-            Проверьте вашу почту</p>
+            Проверьте вашу <a href="https://mail.google.com/">почту</a>.</p>
             <p><a href="{% url 'login' %}">На главную</a></p>
         </div>
     </div>

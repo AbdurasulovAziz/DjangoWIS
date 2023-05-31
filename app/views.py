@@ -1,125 +1,118 @@
+from django.core.mail import EmailMessage
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render
+from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView
 
-from app.models import Food, Drink, Sauce, Dessert, BoxMix
+from app.forms import DishAddToCartForm
+from app.models import Food, Drink, Sauce, Dessert, BoxMix, Order, OrderItem
 
 
 class DishAbstractPage(ListView):
     template_name = "app/menu.html"
     context_object_name = "data"
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        queryset = super().get_context_data()
+        queryset["form"] = DishAddToCartForm()
+        return queryset
+
 
 class DishDetailAbstractPage(DetailView):
     template_name = "app/menu-detail.html"
     context_object_name = "data"
 
-
-class FoodPage(DishAbstractPage):
-    model = Food
-
     def get_queryset(self):
-        queryset = self.model.objects.values(
+        queryset = self.model.objects.filter(id=self.kwargs["pk"]).values(
             "name", "price", "description", "on_stop", "category", "spicy"
         )
 
         return queryset
+
+
+class FoodPage(DishAbstractPage):
+    model = Food
+
+    # def get_queryset(self):
+    #     queryset = self.model.objects.values(
+    #         "name", "price", "description", "on_stop", "category", "spicy"
+    #     )
+    #
+    #     return queryset
 
 
 class FoodDetailPage(DishDetailAbstractPage):
     model = Food
 
-    def get_queryset(self):
-        queryset = self.model.objects.filter(id=self.kwargs['pk']).values(
-            "name", "price", "description", "on_stop", "category", "spicy"
-        )
-
-        return queryset
-
 
 class DrinkPage(DishAbstractPage):
     model = Drink
-
-    def get_queryset(self):
-        queryset = self.model.objects.values(
-            "name", "price", "description", "on_stop", "category", "liter"
-        )
-
-        return queryset
 
 
 class DrinkDetailPage(DishDetailAbstractPage):
     model = Drink
 
-    def get_queryset(self):
-        queryset = self.model.objects.filter(id=self.kwargs['pk']).values(
-            "name", "price", "description", "on_stop", "category", "liter"
-        )
-
-        return queryset
-
 
 class SaucePage(DishAbstractPage):
     model = Sauce
-
-    def get_queryset(self):
-        queryset = self.model.objects.values(
-            "name", "price", "description", "on_stop"
-        )
-
-        return queryset
 
 
 class SauceDetailPage(DishDetailAbstractPage):
     model = Sauce
 
-    def get_queryset(self):
-        queryset = self.model.objects.filter(id=self.kwargs['pk']).values(
-            "name", "price", "description", "on_stop"
-        )
-
-        return queryset
-
 
 class DessertPage(DishAbstractPage):
     model = Dessert
-
-    def get_queryset(self):
-        queryset = self.model.objects.values(
-            "name", "price", "description", "on_stop"
-        )
-
-        return queryset
 
 
 class DessertDetailPage(DishDetailAbstractPage):
     model = Dessert
 
-    def get_queryset(self):
-        queryset = self.model.objects.filter(id=self.kwargs['pk']).values(
-            "name", "price", "description", "on_stop"
-        )
-
-        return queryset
-
 
 class BoxMixPage(DishAbstractPage):
     model = BoxMix
-
-    def get_queryset(self):
-        queryset = self.model.objects.values(
-            "name", "price", "description", "on_stop", "box_food__spicy"
-        )
-
-        return queryset
 
 
 class BoxMixDetailPage(DishDetailAbstractPage):
     model = BoxMix
 
-    def get_queryset(self):
-        queryset = self.model.objects.filter(id=self.kwargs['pk']).values(
-            "name", "price", "description", "on_stop", "box_food__spicy"
-        )
 
-        return queryset
+class CartPageView(View):
+    def get(self, request, *args, **kwargs):
+        queryset = Order.objects.filter(user=request.user, status="Cart").first()
+
+        try:
+            context = queryset.orderitem_set.all()
+        except AttributeError:
+            context = None
+
+        return render(request, "app/cart.html", {"context": context})
+
+    def post(self, request, *args, **kwargs):
+        order = Order.objects.filter(user=request.user, status="Cart").first()
+        if order is None:
+            return HttpResponseBadRequest(
+                "This view can not handle method".format(request.method), status=400
+            )
+
+        order.status = "Sent"
+        order.save()
+        if EmailMessage(
+            "UserCode",
+            f"Ваш заказ будет доставлен в течении 15 минут",
+            to=["azizabdurasulov2002@gmail.com"],  # TODO поменять на user.email
+        ).send():
+            return HttpResponseRedirect(reverse("food-page"))
+
+
+class CartAddView(View):
+    def post(self, request, dish_id, *args, **kwargs):
+        order, is_created = Order.objects.get_or_create(
+            user=request.user, status="Cart"
+        )
+        order_item, is_created = order.orderitem_set.get_or_create(dish_id=dish_id)
+        order_item.count = request.POST.get("count")
+        order_item.save()
+
+        return HttpResponseRedirect(reverse("food-page"))

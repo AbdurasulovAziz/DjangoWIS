@@ -97,11 +97,9 @@ DATABASES = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     }
-
 ]
 
 
@@ -162,8 +160,8 @@ LOGGING = {
 }
 
 
-LOGIN_REDIRECT_URL = "/app/home"
-LOGOUT_REDIRECT_URL = "/auth/login"
+LOGIN_REDIRECT_URL = "/app/food"
+LOGOUT_REDIRECT_URL = "/account/login"
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

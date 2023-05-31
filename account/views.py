@@ -49,7 +49,8 @@ class UserRegistrationVerifyView(View):
         if RedisDB.check_user_registration_code(
             user.email, self.kwargs.get("activation_key")
         ):
-            self.UserModel.objects.filter(email=user.email).update(if_verified=True)
+            user.is_verified = True
+            user.save()
             return HttpResponseRedirect(reverse("login"))
 
         return HttpResponse("<h1>Ссылка не действительна</h1>")
