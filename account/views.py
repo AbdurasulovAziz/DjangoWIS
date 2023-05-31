@@ -33,7 +33,7 @@ class UserRegistrationView(View):
             if EmailMessage(
                 "UserCode",
                 f"{settings.EMAIL_VERIFICATION_URL}/{user.email}/{code}",
-                to=["azizabdurasulov2002@gmail.com"],  # TODO поменять на user.email
+                to=[request.user.email],
             ).send():
                 return render(request, "account/registration_confirm.html")
 

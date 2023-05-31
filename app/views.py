@@ -101,7 +101,7 @@ class CartPageView(View):
         if EmailMessage(
             "UserCode",
             f"Ваш заказ будет доставлен в течении 15 минут",
-            to=["azizabdurasulov2002@gmail.com"],  # TODO поменять на user.email
+            to=[request.user.email],
         ).send():
             return HttpResponseRedirect(reverse("food-page"))
 

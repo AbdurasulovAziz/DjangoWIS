@@ -10,7 +10,7 @@ from app.models_actions import put_on_stop_list, remove_from_stop_list
 # Register your models here.
 
 
-def my_view(request, object_id):  # TODO плохая запись
+def my_view(request, object_id):
     next_object_id = models.Food.objects.filter(id__gt=object_id).first()
     if next_object_id:
         return HttpResponseRedirect(
