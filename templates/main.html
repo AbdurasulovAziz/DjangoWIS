@@ -19,13 +19,13 @@
                             {% if user.is_authenticated %}
                                 <a href="{% url 'profile' %}" class="text-decoration-none text-dark">{{ user.email }}</a>
                                 <span>|</span>
-                                <a href="{% url 'cart-page' %}" class="text-decoration-none">Корзина</a>
+                                <a href="{% url 'cart-page' %}" class="text-decoration-none">{{ _("Cart") }}</a>
                                 <span>|</span>
-                                <a href="{% url 'logout' %}" class="text-decoration-none">Выйти из профиля</a>
+                                <a href="{% url 'logout' %}" class="text-decoration-none">{{ _("Logout")}}</a>
                             {% else %}
-                                <a href="{% url 'login' %}" class="text-decoration-none">Логин</a>
+                                <a href="{% url 'login' %}" class="text-decoration-none">{{ _("Login") }}</a>
                                 <span>|</span>
-                                <a href="{% url 'registration' %}" class="text-decoration-none btn btn-primary">Регистрация</a>
+                                <a href="{% url 'registration' %}" class="text-decoration-none btn btn-primary">{{ _("Registration") }}</a>
                             {% endif %}
                         </div>
                     </nav>

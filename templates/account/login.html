@@ -9,21 +9,21 @@
         {% if not user.is_authenticated %}
         <form action="." method="post" class="text-center shadow-lg border border-dark py-5 rounded col-5">
             {% csrf_token %}
-            <h2 class="mb-4">Login</h2>
+            <h2 class="mb-4">{{ _("Login") }}</h2>
             {% for field in form %}
                 <div class="form-group">
                     <label>{{ field.label_tag }}</label>
                     <p>{{ field }}</p>
                 </div>
             {% endfor %}
-            <button type="submit" class="btn btn-success">Enter</button>
+            <button type="submit" class="btn btn-success">{{_("Enter")}}</button>
         </form>
         {% else %}
             <div>
-                <h2>Вы аутентифицированы</h2>
+                <h2>{{ _("You authenticated")}}</h2>
                 <p class="d-flex justify-content-around">
-                    <a href="{% url 'food-page' %}">На главную</a>
-                    <a href="{% url 'logout' %}">Выйти</a>
+                    <a href="{% url 'food-page' %}">{{ _("Main Page") }}</a>
+                    <a href="{% url 'logout' %}">{{ _("Logout") }}</a>
                 </p>
             </div>
         {% endif %}

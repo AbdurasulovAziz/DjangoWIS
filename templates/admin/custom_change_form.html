@@ -3,6 +3,6 @@
 {% block submit_buttons_bottom %}
     {{ block.super }}
     {% if object_id %}
-        <a href="{% url 'admin:app_food_next' object_id %}"><h2>Next</h2></a>
+        <a href="{% url 'admin:app_food_next' object_id %}"><h2>{{ _("Next") }}</h2></a>
     {% endif %}
 {% endblock %}

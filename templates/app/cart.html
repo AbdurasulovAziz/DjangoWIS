@@ -5,10 +5,10 @@
     {% if context %}
 
         <div class="d-flex mt-2 border-bottom text-center">
-            <p class="w-25"><b>Блюдо</b></p>
-            <p class="w-25"><b>Количество</b></p>
-            <p class="w-25"><b>Стоимость единицы</b></p>
-            <p class="w-25"><b>Общая стоимость</b></p>
+            <p class="w-25"><b>{{ _("Dish") }}</b></p>
+            <p class="w-25"><b>{{ _("Count") }}</b></p>
+            <p class="w-25"><b>{{ _("Per price")}}</b></p>
+            <p class="w-25"><b>{{ _("Total price")}}</b></p>
         </div>
         {% for item in context %}
             <div class="d-flex mt-3 text-center">
@@ -19,13 +19,13 @@
             </div>
         {% endfor %}
         <div class="border-top d-flex justify-content-end">
-            <i class="my-4">{% total_price context %} руб</i>
+            <i class="my-4">{% total_price context %} {{ _("rub") }}</i>
         </div>
         <form action="" method="POST" class="border-top d-flex justify-content-end">
             {% csrf_token %}
-            <button type="submit" class="btn btn-success mt-3">Оформить заказ</button>
+            <button type="submit" class="btn btn-success mt-3">{{ _("Confirm order")}}</button>
         </form>
     {% else %}
-        <h2>Ваша корзина пуста</h2>
+        <h2>{{ _("Your cart is empty")}}</h2>
     {% endif %}
 {% endblock %}

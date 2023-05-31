@@ -6,15 +6,15 @@
     <div class="col-12 d-flex justify-content-center align-items-center" style="height: 100vh">
         <div class="col-4 border border-dark rounded py-4 d-flex justify-content-center">
             <div class="col-10">
-                <h2 class="d-flex justify-content-center pb-3">USER PROFILE</h2>
+                <h2 class="d-flex justify-content-center pb-3">{{ _("USER PROFILE")}}</h2>
 
-                <p>Email: {{ user }}</p>
-                <p>First name: {{ user.first_name }}</p>
-                <p>Last name: {{ user.last_name }}</p>
-                <p>Phone: {{ user.profile.phone }}</p>
-                <p>Birth day: {{ user.profile.birth_day }}</p>
-                <p>Region: {{ user.profile.region }}</p>
-                <a href="{% url 'profile-change' %}" class="btn btn-primary">Change Profile</a>
+                <p>{{ _("Email:")}} {{ user }}</p>
+                <p>{{ _("First name:")}} {{ user.first_name }}</p>
+                <p>{{ _("Last name:")}} {{ user.last_name }}</p>
+                <p>{{ _("Phone:")}} {{ user.profile.phone }}</p>
+                <p>{{ _("Birth day:")}} {{ user.profile.birth_day }}</p>
+                <p>{{ _("Region:")}} {{ user.profile.region }}</p>
+                <a href="{% url 'profile-change' %}" class="btn btn-primary">{{ _("Change Profile")}}</a>
             </div>
         </div>
     </div>

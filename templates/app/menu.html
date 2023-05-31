@@ -1,13 +1,13 @@
-{% extends 'app/app_base.html' %}
+{% extends 'main.html' %}
 {% load custom_tags %}
 
 {% block content %}
     <aside class="d-flex justify-content-between">
-        <a class="text-decoration-none mt-3" href="{% url 'food-page'%}">Food</a>
-        <a class="text-decoration-none mt-3" href="{% url 'drink-page'%}">Drinks</a>
-        <a class="text-decoration-none mt-3" href="{% url 'dessert-page'%}">Desserts</a>
-        <a class="text-decoration-none mt-3" href="{% url 'sauce-page'%}">Sauces</a>
-        <a class="text-decoration-none mt-3" href="{% url 'boxmix-page'%}">BoxMix</a>
+        <a class="text-decoration-none mt-3" href="{% url 'food-page'%}">{{ _("Food") }}</a>
+        <a class="text-decoration-none mt-3" href="{% url 'drink-page'%}">{{ _("Drinks") }}</a>
+        <a class="text-decoration-none mt-3" href="{% url 'dessert-page'%}">{{ _("Desserts") }}</a>
+        <a class="text-decoration-none mt-3" href="{% url 'sauce-page'%}">{{ _("Sauces") }}</a>
+        <a class="text-decoration-none mt-3" href="{% url 'boxmix-page'%}">{{ _("BoxMix") }}</a>
     </aside>
     <section class="h-100 d-flex flex-wrap text-center mt-3 py-5">
      {% for element in data %}
@@ -24,7 +24,7 @@
                 {% if user.is_authenticated and element.on_stop is False%}
                 <div>
                         {{ form.count }}
-                        <button type="submit" class="btn btn-success my-2">В корзину</button>
+                        <button type="submit" class="btn btn-success my-2">{{ _("Add to cart")}}</button>
                 </div>
                 {% endif %}
             </form>
