@@ -24,22 +24,14 @@ class DishDetailAbstractPage(DetailView):
     context_object_name = "data"
 
     def get_queryset(self):
-        queryset = self.model.objects.filter(id=self.kwargs["pk"]).values(
+
+        return self.model.objects.filter(id=self.kwargs["pk"]).values(
             "name", "price", "description", "on_stop", "category", "spicy"
         )
-
-        return queryset
 
 
 class FoodPage(DishAbstractPage):
     model = Food
-
-    # def get_queryset(self):
-    #     queryset = self.model.objects.values(
-    #         "name", "price", "description", "on_stop", "category", "spicy"
-    #     )
-    #
-    #     return queryset
 
 
 class FoodDetailPage(DishDetailAbstractPage):
@@ -93,7 +85,7 @@ class CartPageView(View):
         order = Order.objects.filter(user=request.user, status="Cart").first()
         if order is None:
             return HttpResponseBadRequest(
-                "This view can not handle method".format(request.method), status=400
+                "Cart can not be empty".format(request.method), status=400
             )
 
         order.status = "Sent"

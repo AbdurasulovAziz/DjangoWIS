@@ -10,9 +10,8 @@ def get_class_name(model):
 
 
 @register.simple_tag
-def dish_url(dish_name, pk):
-    url = reverse(f"{dish_name}-detail", args=[pk])
-    return url
+def redirect_to_dish_detail_url(dish_name, pk):
+    return reverse(f"{dish_name}-detail", args=[pk])
 
 
 @register.simple_tag
@@ -21,7 +20,7 @@ def multiply(value1, value2):
 
 
 @register.simple_tag
-def total_price(object):
+def get_total_price(object):
     count = [item.dish.price * item.count for item in object]
     return sum(count)
 

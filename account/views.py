@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.mail import EmailMessage
 
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.urls import reverse
 
@@ -77,7 +77,7 @@ class UserProfileChangeView(View):
 
     def post(self, request, *args, **kwargs):
         form = UserProfileForm(
-            request.POST, instance=self.User.objects.get(email=request.user.email)
+            request.POST, instance=self.User.objects.get_object_or_404(email=request.user.email)
         )
         if form.is_valid():
             form.save()

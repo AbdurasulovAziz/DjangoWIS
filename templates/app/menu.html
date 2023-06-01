@@ -14,7 +14,7 @@
             <form style="max-height: 300px; height: 100%" action="{% url 'cart-add' element.id %}" method="post" class="col-3 border border-dark rounded d-flex flex-column justify-content-between">
                 {% csrf_token %}
                 <h2>
-                    <a href="{% dish_url element|get_class_name element.id %}" class="text-decoration-none">{{ element.name }}</a><br>
+                    <a href="{% redirect_to_dish_detail_url element|get_class_name element.id %}" class="text-decoration-none">{{ element.name }}</a><br>
                 </h2>
                 <div style="overflow:hidden"
                      class="mx-3 flex-grow-1">

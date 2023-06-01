@@ -3,6 +3,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 
+from WISDjango.settings import BOXMIX_SALE
+
 
 class Dish(models.Model):
     name = models.CharField()
@@ -61,20 +63,24 @@ class BoxMix(Dish):
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
-        price_list = [self.box_food, self.box_dessert, self.box_sauce, self.box_drink]
-        self.price = (
-            sum([element.price for element in price_list if element is not None])
-            / 100
-            * 85
-        )
+        self.price = self.get_price_with_sale()
         super().save()
+
+    def get_price_with_sale(self):
+        price_list = [self.box_food, self.box_dessert, self.box_sauce, self.box_drink]
+        price = (
+                sum([element.price for element in price_list if element is not None])
+                / 100
+                * BOXMIX_SALE
+        )
+        return price
 
 
 class Order(models.Model):
-    STATUS = (("Cart", "In Cart"), ("Sent", "Sent"))
+    STATUS_CHOICES = (("Cart", "In Cart"), ("Sent", "Sent"))
 
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    status = models.CharField(choices=STATUS, default="Cart")
+    status = models.CharField(choices=STATUS_CHOICES, default="Cart")
 
     def __str__(self):
         return f"{self.user}"

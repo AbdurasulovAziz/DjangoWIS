@@ -5,32 +5,32 @@ from django.contrib.auth.forms import UserCreationForm
 
 class RegistrationForm(UserCreationForm):
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={"style": "width:60%", "class": "py-1"})
+        widget=forms.PasswordInput(attrs={"style": "width:60%"})
     )
     password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={"style": "width:60%", "class": "py-1"})
+        widget=forms.PasswordInput(attrs={"style": "width:60%"})
     )
 
     class Meta:
         model = get_user_model()
         fields = ("email", "password1", "password2")
         widgets = {
-            "email": forms.TextInput(attrs={"style": "width:60%", "class": "py-1"})
+            "email": forms.TextInput(attrs={"style": "width:60%"})
         }
 
 
 class UserProfileForm(forms.ModelForm):
     phone = forms.CharField(
         required=None,
-        widget=forms.TextInput(attrs={"style": "width:60%", "class": "py-1"}),
+        widget=forms.TextInput(attrs={"style": "width:60%"}),
     )
     birth_day = forms.DateField(
         required=None,
-        widget=forms.TextInput(attrs={"style": "width:60%", "class": "py-1"}),
+        widget=forms.TextInput(attrs={"style": "width:60%"}),
     )
     region = forms.CharField(
         required=None,
-        widget=forms.TextInput(attrs={"style": "width:60%", "class": "py-1"}),
+        widget=forms.TextInput(attrs={"style": "width:60%"}),
     )
 
     class Meta:
@@ -45,9 +45,9 @@ class UserProfileForm(forms.ModelForm):
         }
         widgets = {
             "first_name": forms.TextInput(
-                attrs={"style": "width:60%", "class": "py-1"}
+                attrs={"style": "width:60%"}
             ),
-            "last_name": forms.TextInput(attrs={"style": "width:60%", "class": "py-1"}),
+            "last_name": forms.TextInput(attrs={"style": "width:60%"}),
         }
 
     def save(self, commit=True):

@@ -19,7 +19,7 @@
             </div>
         {% endfor %}
         <div class="border-top d-flex justify-content-end">
-            <i class="my-4">{% total_price context %} {{ _("rub") }}</i>
+            <i class="my-4">{% get_total_price context %} {{ _("rub") }}</i>
         </div>
         <form action="" method="POST" class="border-top d-flex justify-content-end">
             {% csrf_token %}

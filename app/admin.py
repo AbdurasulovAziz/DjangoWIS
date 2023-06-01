@@ -10,7 +10,7 @@ from app.models_actions import put_on_stop_list, remove_from_stop_list
 # Register your models here.
 
 
-def my_view(request, object_id):
+def go_next_instance(request, object_id):
     next_object_id = models.Food.objects.filter(id__gt=object_id).first()
     if next_object_id:
         return HttpResponseRedirect(
@@ -44,9 +44,9 @@ class FoodAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         urls = super().get_urls()
-        my_urls = [path("<int:object_id>/next/", my_view, name="app_food_next")]
+        extra_urls = [path("<int:object_id>/next/", go_next_instance, name="app_food_next")]
 
-        return my_urls + urls
+        return extra_urls + urls
 
 
 class DrinkAdminFilter(admin.SimpleListFilter):
@@ -60,10 +60,11 @@ class DrinkAdminFilter(admin.SimpleListFilter):
         )
 
     def queryset(self, request, queryset):
-        if self.value() == "Hot":
-            return queryset.filter(category="Hot")
-        if self.value() == "Cold":
-            return queryset.filter(category="Cold")
+        values = ('Hot', 'Cold')
+        value = self.value()
+        if value not in values:
+            raise AttributeError
+        return queryset.filter(category=value)
 
 
 @admin.register(models.Drink)
@@ -121,6 +122,7 @@ class BoxMixAdmin(admin.ModelAdmin):
         "box_dessert",
         "price",
         "on_stop",
+
     )
     actions = (
         put_on_stop_list,
