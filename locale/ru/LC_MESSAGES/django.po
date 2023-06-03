@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-02 09:54+0300\n"
+"POT-Creation-Date: 2023-05-31 12:46+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,9 +20,506 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: templates/app/app.html:6
-msgid "Hello"
-msgstr "Здарова"
+#: templates/account/login.html:12
+#: templates/account/password_reset_complete.html:10 templates/main.html:26
+msgid "Login"
+msgstr "Вход"
+
+#: templates/account/login.html:19
+msgid "Enter"
+msgstr "Войти"
+
+#: templates/account/login.html:23
+msgid "You authenticated"
+msgstr "Вы аутентифицированы"
+
+#: templates/account/login.html:25
+#: templates/account/password_change_done.html:7
+msgid "Main Page"
+msgstr "На главную"
+
+#: templates/account/login.html:26 templates/main.html:24
+msgid "Logout"
+msgstr "Выйти"
+
+#: templates/account/password_change.html:6
+msgid "Change Password"
+msgstr "Изменить пароль"
+
+#: templates/account/password_change.html:17
+#: templates/account/password_reset_confirm.html:17
+#: venv/lib/python3.11/site-packages/django/forms/widgets.py:441
+msgid "Change"
+msgstr "Изменить"
+
+#: templates/account/password_change_done.html:6
+msgid "Your password successfully changed"
+msgstr "Ваш пароль успешно изменен"
+
+#: templates/account/password_reset_complete.html:8
+msgid "Password has been restored"
+msgstr "Пароль был восстановлен"
+
+#: templates/account/password_reset_complete.html:9
+msgid "Your password saved. You can login now"
+msgstr "Ваш пароль сохранен. Вы можете войти"
+
+#: templates/account/password_reset_confirm.html:6
+msgid "Set New Password"
+msgstr "Установить новый пароль"
+
+#: templates/account/password_reset_done.html:6
+msgid "An email with password recovery instructions has been sent"
+msgstr "Инструкция по восстановлению пароля отправлена на вашу почту"
+
+#: templates/account/password_reset_done.html:7
+msgid ""
+"We have sent you instructions on how to set a new password to the email "
+"address you provided (if we have such an address in our database). You "
+"should receive it soon."
+msgstr ""
+"Мы отправили вам инструкцию, как установить новый пароль на почтуадрес, "
+"который вы указали (если у нас есть такой адрес в нашей базе данных). Вы "
+"должны получить его в ближайшее время."
+
+#: templates/account/password_reset_done.html:9
+msgid ""
+"If you do not receive an email, please make sure you enter the email address "
+"you registered with and check your spam folder."
+msgstr ""
+"Если вы не получили электронное письмо, убедитесь, что вы ввели адрес "
+"электронной почты вы зарегистрировались и проверьте папку со спамом"
+
+#: templates/account/password_reset_form.html:9
+msgid "Reset Password"
+msgstr "Сбросить пароль"
+
+#: templates/account/password_reset_form.html:18
+#: templates/account/registration.html:22
+msgid "Submit"
+msgstr "Отправить"
+
+#: templates/account/profile_detail.html:9
+msgid "USER PROFILE"
+msgstr "Профиль"
+
+#: templates/account/profile_detail.html:11
+msgid "Email:"
+msgstr "Почта:"
+
+#: templates/account/profile_detail.html:12
+msgid "First name:"
+msgstr "Имя:"
+
+#: templates/account/profile_detail.html:13
+msgid "Last name:"
+msgstr "Фамилия:"
+
+#: templates/account/profile_detail.html:14
+msgid "Phone:"
+msgstr "Телефон:"
+
+#: templates/account/profile_detail.html:15
+msgid "Birth day:"
+msgstr "День рождения:"
+
+#: templates/account/profile_detail.html:16
+msgid "Region:"
+msgstr "Регион:"
+
+#: templates/account/profile_detail.html:17
+msgid "Change Profile"
+msgstr "Изменить профиль"
+
+#: templates/account/profile_detail_change.html:10
+msgid "User Profile"
+msgstr "Профиль"
+
+#: templates/account/profile_detail_change.html:17
+msgid "Update Profile"
+msgstr "Изменить "
+
+#: templates/account/registration.html:12
+msgid "Registration Form"
+msgstr "Форма регистрации"
+
+#: templates/account/registration_confirm.html:9
+msgid ""
+"We have sent an email with a link to confirm your registration to your email "
+"address."
+msgstr "Мы отправили письмо с подтверждением регистрации на вашу почту"
+
+#: templates/account/registration_confirm.html:10
+msgid "Check your"
+msgstr "Проверьте вашу"
+
+#: templates/account/registration_confirm.html:10
+msgid "mail"
+msgstr "почту"
+
+#: templates/account/registration_confirm.html:11
+msgid "На главную"
+msgstr "Main page"
+
+#: templates/admin/custom_change_form.html:6
+msgid "Next"
+msgstr "Дальше"
+
+#: templates/app/cart.html:8
+msgid "Dish"
+msgstr "Блюдо"
+
+#: templates/app/cart.html:9
+msgid "Count"
+msgstr "Количество"
+
+#: templates/app/cart.html:10
+msgid "Per price"
+msgstr "За порцию"
+
+#: templates/app/cart.html:11
+msgid "Total price"
+msgstr "Общая стоимость"
+
+#: templates/app/cart.html:22
+msgid "rub"
+msgstr "руб"
+
+#: templates/app/cart.html:26
+msgid "Confirm order"
+msgstr "Подтвердить заказ"
+
+#: templates/app/cart.html:29
+msgid "Your cart is empty"
+msgstr "Ваша корзина пуста"
+
+#: templates/app/menu.html:6
+msgid "Food"
+msgstr "Еда"
+
+#: templates/app/menu.html:7
+msgid "Drinks"
+msgstr "Напитки"
+
+#: templates/app/menu.html:8
+msgid "Desserts"
+msgstr "Десерты"
+
+#: templates/app/menu.html:9
+msgid "Sauces"
+msgstr "Соусы"
+
+#: templates/app/menu.html:10
+msgid "BoxMix"
+msgstr "Сеты"
+
+#: templates/app/menu.html:27
+msgid "Add to cart"
+msgstr "Добавить в корзину"
+
+#: templates/main.html:22
+msgid "Cart"
+msgstr "Корзина"
+
+#: templates/main.html:28
+#, fuzzy
+#| msgid "Registration Form"
+msgid "Registration"
+msgstr "Форма регистрации"
+
+#: venv/lib/python3.11/site-packages/click/_termui_impl.py:496
+#, python-brace-format
+msgid "{editor}: Editing failed"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/_termui_impl.py:500
+#, python-brace-format
+msgid "{editor}: Editing failed: {e}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:1097
+msgid "Aborted!"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:1282
+#: venv/lib/python3.11/site-packages/click/decorators.py:495
+msgid "Show this message and exit."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:1313
+#: venv/lib/python3.11/site-packages/click/core.py:1339
+#, python-brace-format
+msgid "(Deprecated) {text}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:1357
+msgid "Options"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:1383
+#, python-brace-format
+msgid "Got unexpected extra argument ({args})"
+msgid_plural "Got unexpected extra arguments ({args})"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:1399
+msgid "DeprecationWarning: The command {name!r} is deprecated."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:1605
+msgid "Commands"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:1637
+msgid "Missing command."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:1715
+msgid "No such command {name!r}."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:2271
+msgid "Value must be an iterable."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:2291
+#, python-brace-format
+msgid "Takes {nargs} values but 1 was given."
+msgid_plural "Takes {nargs} values but {len} were given."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:2734
+#, python-brace-format
+msgid "env var: {var}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:2764
+msgid "(dynamic)"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:2777
+#, python-brace-format
+msgid "default: {default}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/core.py:2790
+msgid "required"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/decorators.py:400
+#, python-format
+msgid "%(prog)s, version %(version)s"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/decorators.py:464
+msgid "Show the version and exit."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:43
+#: venv/lib/python3.11/site-packages/click/exceptions.py:79
+#, python-brace-format
+msgid "Error: {message}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:71
+#, python-brace-format
+msgid "Try '{command} {option}' for help."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:120
+#, python-brace-format
+msgid "Invalid value: {message}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:122
+#, python-brace-format
+msgid "Invalid value for {param_hint}: {message}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:178
+msgid "Missing argument"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:180
+msgid "Missing option"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:182
+msgid "Missing parameter"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:184
+#, python-brace-format
+msgid "Missing {param_type}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:191
+#, python-brace-format
+msgid "Missing parameter: {param_name}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:211
+#, python-brace-format
+msgid "No such option: {name}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:223
+#, python-brace-format
+msgid "Did you mean {possibility}?"
+msgid_plural "(Possible options: {possibilities})"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:261
+msgid "unknown error"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/exceptions.py:268
+msgid "Could not open file {filename!r}: {message}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/parser.py:231
+msgid "Argument {name!r} takes {nargs} values."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/parser.py:413
+msgid "Option {name!r} does not take a value."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/parser.py:474
+msgid "Option {name!r} requires an argument."
+msgid_plural "Option {name!r} requires {nargs} arguments."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: venv/lib/python3.11/site-packages/click/shell_completion.py:316
+msgid "Shell completion is not supported for Bash versions older than 4.4."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/shell_completion.py:322
+msgid "Couldn't detect Bash version, shell completion is not supported."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/termui.py:160
+msgid "Repeat for confirmation"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/termui.py:176
+msgid "Error: The value you entered was invalid."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/termui.py:178
+#, python-brace-format
+msgid "Error: {e.message}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/termui.py:189
+msgid "Error: The two entered values do not match."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/termui.py:245
+msgid "Error: invalid input"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/termui.py:776
+msgid "Press any key to continue..."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:265
+#, python-brace-format
+msgid ""
+"Choose from:\n"
+"\t{choices}"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:297
+msgid "{value!r} is not {choice}."
+msgid_plural "{value!r} is not one of {choices}."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:387
+msgid "{value!r} does not match the format {format}."
+msgid_plural "{value!r} does not match the formats {formats}."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:409
+msgid "{value!r} is not a valid {number_type}."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:465
+#, python-brace-format
+msgid "{value} is not in the range {range}."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:606
+msgid "{value!r} is not a valid boolean."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:630
+msgid "{value!r} is not a valid UUID."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:811
+msgid "file"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:813
+msgid "directory"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:815
+msgid "path"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:861
+msgid "{name} {filename!r} does not exist."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:870
+msgid "{name} {filename!r} is a file."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:878
+#, python-brace-format
+msgid "{name} '{filename}' is a directory."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:887
+msgid "{name} {filename!r} is not readable."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:896
+msgid "{name} {filename!r} is not writable."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:905
+msgid "{name} {filename!r} is not executable."
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/click/types.py:972
+#, python-brace-format
+msgid "{len_type} values are required, but {len_value} was given."
+msgid_plural "{len_type} values are required, but {len_value} were given."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: venv/lib/python3.11/site-packages/django/contrib/messages/apps.py:15
 msgid "Messages"
@@ -652,10 +1149,6 @@ msgstr ""
 msgid "Currently"
 msgstr ""
 
-#: venv/lib/python3.11/site-packages/django/forms/widgets.py:441
-msgid "Change"
-msgstr ""
-
 #: venv/lib/python3.11/site-packages/django/forms/widgets.py:770
 msgid "Unknown"
 msgstr ""
@@ -1230,3 +1723,6 @@ msgstr ""
 #: venv/lib/python3.11/site-packages/django/views/templates/default_urlconf.html:249
 msgid "Connect, get help, or contribute"
 msgstr ""
+
+#~ msgid "Hello"
+#~ msgstr "Здарова"

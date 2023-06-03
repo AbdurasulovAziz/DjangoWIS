@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+{% load i18n %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+    <div class="col-12 d-flex justify-content-center align-items-center" style="height: 100vh">
+        <div>
+            <p>{{ _("We have sent an email with a link to confirm your registration to your email address.")}} <br>
+                    {{_("Check your")}} <a href="https://mail.google.com/">{{ _("mail") }}</a>.</p>
+            <p><a href="{% url 'login' %}">{{ _("На главную")}}</a></p>
+        </div>
+    </div>
+{% endblock %}
