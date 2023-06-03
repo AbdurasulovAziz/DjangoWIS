@@ -10,10 +10,19 @@ admin.site.register(Permission)
 
 @admin.register(models.CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'first_name', 'last_name',)
-    search_fields = ('name',)
+    list_display = (
+        "email",
+        "first_name",
+        "last_name",
+    )
+    search_fields = ("name",)
 
 
 @admin.register(models.Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'phone', 'birth_day', 'region',)
+    list_display = (
+        "user",
+        "phone",
+        "birth_day",
+        "region",
+    )

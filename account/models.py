@@ -13,15 +13,15 @@ from account.validators import birth_date_validation
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField('email address', unique=True)
-    first_name = models.CharField('first name', blank=True)
-    last_name = models.CharField('last_name', blank=True)
+    email = models.EmailField("email address", unique=True)
+    first_name = models.CharField("First name", blank=True)
+    last_name = models.CharField("Last name", blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
@@ -32,9 +32,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    phone = models.CharField('Phone', validators=[RegexValidator('[+]\d+$')], blank=True)
-    birth_day = models.DateField('Birth day', validators=[birth_date_validation], blank=True, null=True)
-    region = models.CharField('Region', blank=True)
+    phone = models.CharField(
+        "Phone", validators=[RegexValidator("[+]\d+$")], blank=True
+    )
+    birth_day = models.DateField(
+        "Birth day", validators=[birth_date_validation], blank=True, null=True
+    )
+    region = models.CharField("Region", blank=True)
 
     @property
     def age(self):
@@ -43,4 +47,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.email
-

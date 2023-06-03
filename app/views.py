@@ -1,12 +1,110 @@
-from django.views.generic import TemplateView
+from django.core.mail import EmailMessage
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.shortcuts import render
+from django.urls import reverse
+from django.views import View
+from django.views.generic import ListView, DetailView
+
+from app.forms import DishAddToCartForm
+from app.models import Food, Drink, Sauce, Dessert, BoxMix, Order, OrderItem
 
 
-class HomePage(TemplateView):
-    template_name = 'app/home.html'
-    
-    # def get(self, request, *args, **kwargs):
-    #     return super().get(self, request, *args, **kwargs)
+class DishAbstractPage(ListView):
+    template_name = "app/menu.html"
+    context_object_name = "data"
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        queryset = super().get_context_data()
+        queryset["form"] = DishAddToCartForm()
+        return queryset
 
 
+class DishDetailAbstractPage(DetailView):
+    template_name = "app/menu-detail.html"
+    context_object_name = "data"
+
+    def get_queryset(self):
+
+        return self.model.objects.filter(id=self.kwargs["pk"]).values(
+            "name", "price", "description", "on_stop", "category", "spicy"
+        )
 
 
+class FoodPage(DishAbstractPage):
+    model = Food
+
+
+class FoodDetailPage(DishDetailAbstractPage):
+    model = Food
+
+
+class DrinkPage(DishAbstractPage):
+    model = Drink
+
+
+class DrinkDetailPage(DishDetailAbstractPage):
+    model = Drink
+
+
+class SaucePage(DishAbstractPage):
+    model = Sauce
+
+
+class SauceDetailPage(DishDetailAbstractPage):
+    model = Sauce
+
+
+class DessertPage(DishAbstractPage):
+    model = Dessert
+
+
+class DessertDetailPage(DishDetailAbstractPage):
+    model = Dessert
+
+
+class BoxMixPage(DishAbstractPage):
+    model = BoxMix
+
+
+class BoxMixDetailPage(DishDetailAbstractPage):
+    model = BoxMix
+
+
+class CartPageView(View):
+    def get(self, request, *args, **kwargs):
+        queryset = Order.objects.filter(user=request.user, status="Cart").first()
+
+        try:
+            context = queryset.orderitem_set.all()
+        except AttributeError:
+            context = None
+
+        return render(request, "app/cart.html", {"context": context})
+
+    def post(self, request, *args, **kwargs):
+        order = Order.objects.filter(user=request.user, status="Cart").first()
+        if order is None:
+            return HttpResponseBadRequest(
+                "Cart can not be empty".format(request.method), status=400
+            )
+
+        order.status = "Sent"
+        order.save()
+        if EmailMessage(
+            "UserCode",
+            f"Ваш заказ будет доставлен в течении 15 минут",
+            to=[request.user.email],
+        ).send():
+            return HttpResponseRedirect(reverse("food-page"))
+
+
+class CartAddView(View):
+    def post(self, request, dish_id, *args, **kwargs):
+        order, is_created = Order.objects.get_or_create(
+            user=request.user, status="Cart"
+        )
+        order_item, is_created = order.orderitem_set.get_or_create(dish_id=dish_id)
+        order_item.count = request.POST.get("count")
+        order_item.save()
+
+        return HttpResponseRedirect(reverse("food-page"))

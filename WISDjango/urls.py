@@ -20,9 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = i18n_patterns(
-    path('admin/', admin.site.urls),
-    path('app/', include('app.urls')),
-    path('account/', include('account.urls')),
-    path('auth/', include('django.contrib.auth.urls')),
-
+    path("admin/", admin.site.urls),
+    path("menu/", include("app.urls")),
+    path("account/", include("account.urls")),
 )
