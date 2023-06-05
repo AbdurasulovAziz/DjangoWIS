@@ -1,46 +1,43 @@
-from django.contrib.auth import get_user_model, views
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from rest_framework import status
+from django.contrib.auth import get_user_model, login
 from django.core.mail import EmailMessage
 
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, get_object_or_404
-from django.views import View
-from django.urls import reverse
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 
-from django.views.generic import DetailView, TemplateView, ListView
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from WISDjango import settings
 from WISDjango.redis import RedisDB
-from account.forms import RegistrationForm, UserProfileForm
-from account.models import Profile
+from account.serializers import UserSerializer, UserDetailSerializer
 
 
 # Create your views here.
 
 
-class UserRegistrationView(View):
-    UserModel = get_user_model()
-    template_path = "account/registration.html"
-
-    def get(self, request, *args, **kwargs):
-        form = RegistrationForm()
-        return render(request, self.template_path, {"form": form})
+class UserRegistrationView(APIView):
 
     def post(self, request, *args, **kwargs):
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = get_user_model().objects.create_user(
+                email=serializer.validated_data['email'],
+                password=serializer.validated_data['password'],
+            )
             code = RedisDB.create_user_registration_code(user.email)
-            if EmailMessage(
-                "UserCode",
-                f"{settings.EMAIL_VERIFICATION_URL}/{user.email}/{code}",
-                to=[request.user.email],
-            ).send():
-                return render(request, "account/registration_confirm.html")
 
-        return render(request, self.template_path, {"form": form})
+            EmailMessage(
+                    "UserCode",
+                    f"{settings.EMAIL_VERIFICATION_URL}/{user.email}/{code}",
+                    to=[user.email],
+            ).send()
+
+            return Response(data={'email': user.email, 'password': user.password}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserRegistrationVerifyView(View):
+class UserRegistrationVerifyView(APIView):
     UserModel = get_user_model()
 
     def get(self, request, *args, **kwargs):
@@ -51,34 +48,33 @@ class UserRegistrationVerifyView(View):
         ):
             user.is_verified = True
             user.save()
-            return HttpResponseRedirect(reverse("login"))
+            login(request, user)
+            return Response(data={'total': 'Success'}, status=status.HTTP_200_OK)
 
-        return HttpResponse("<h1>Ссылка не действительна</h1>")
-
-
-class UserProfileView(View):
-    def get(self, request, *args, **kwargs):
-        user = get_user_model().objects.get(email=request.user.email)
-        return render(request, "account/profile_detail.html", {"user": user})
+        return Response(Http404, status=status.HTTP_404_NOT_FOUND)
 
 
-class UserProfileChangeView(View):
-    template_name = "account/profile_detail_change.html"
+class UserProfileView(APIView):
+
     User = get_user_model()
 
+    def get_object(self, email):
+        try:
+            queryset = self.User.objects.get(email=email)
+            return queryset
+        except self.User.DoesNotExist:
+            raise Http404
+
+
     def get(self, request, *args, **kwargs):
-        user_instance = self.User.objects.get(email=request.user.email)
+        queryset = get_object_or_404(get_user_model().objects, email=request.user.email)
+        serializer = UserDetailSerializer(queryset)
+        return Response(serializer.data)
 
-        form = UserProfileForm(instance=user_instance)
-        form.initial["phone"] = user_instance.profile.phone
-        form.initial["birth_day"] = user_instance.profile.birth_day
-        form.initial["region"] = user_instance.profile.region
-        return render(request, self.template_name, {"form": form})
-
-    def post(self, request, *args, **kwargs):
-        form = UserProfileForm(
-            request.POST, instance=self.User.objects.get_object_or_404(email=request.user.email)
-        )
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse("profile"))
+    def patch(self, request, *args, **kwargs):
+        user = self.get_object(request.user.email)
+        serializer = UserDetailSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(status.HTTP_400_BAD_REQUEST)

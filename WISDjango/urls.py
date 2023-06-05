@@ -19,8 +19,9 @@ from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import path, include
 
-urlpatterns = i18n_patterns(
+urlpatterns = [
     path("admin/", admin.site.urls),
     path("menu/", include("app.urls")),
     path("account/", include("account.urls")),
-)
+    path("auth/", include('rest_framework.urls')),
+]
