@@ -44,7 +44,9 @@ class FoodAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         urls = super().get_urls()
-        extra_urls = [path("<int:object_id>/next/", go_next_instance, name="app_food_next")]
+        extra_urls = [
+            path("<int:object_id>/next/", go_next_instance, name="app_food_next")
+        ]
 
         return extra_urls + urls
 
@@ -60,7 +62,7 @@ class DrinkAdminFilter(admin.SimpleListFilter):
         )
 
     def queryset(self, request, queryset):
-        values = ('Hot', 'Cold')
+        values = ("Hot", "Cold")
         value = self.value()
         if value not in values:
             raise AttributeError
@@ -122,13 +124,12 @@ class BoxMixAdmin(admin.ModelAdmin):
         "box_dessert",
         "price",
         "on_stop",
-
     )
     actions = (
         put_on_stop_list,
         remove_from_stop_list,
     )
-    readonly_fields = ("price",)
+    readonly_fields = ("get_price_with_sale",)
     search_fields = ("name", "food")
 
 
@@ -136,15 +137,9 @@ class OrderItemTabular(admin.TabularInline):
     model = models.OrderItem
     extra = 1
     readonly_fields = (
-        "dish_price",
-        "total_price",
+        "get_dish_price",
+        "get_total_price",
     )
-
-    def dish_price(self, obj):
-        return obj.dish.price
-
-    def total_price(self, obj):
-        return obj.dish.price * obj.count
 
 
 @admin.register(models.Order)

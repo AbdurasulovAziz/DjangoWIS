@@ -15,4 +15,5 @@ urlpatterns = [
     path("boxmix/<int:pk>/", views.BoxMixDetailPage.as_view(), name="boxmix-detail"),
     path("cart/", views.CartPageView.as_view(), name="cart-page"),
     path("cart/add/<int:dish_id>/", views.CartAddView.as_view(), name="cart-add"),
+    path("cart/item/<int:dish_id>/", views.CartItemView.as_view()),
 ]

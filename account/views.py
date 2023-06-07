@@ -17,23 +17,25 @@ from account.serializers import UserSerializer, UserDetailSerializer
 
 
 class UserRegistrationView(APIView):
-
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = get_user_model().objects.create_user(
-                email=serializer.validated_data['email'],
-                password=serializer.validated_data['password'],
+                email=serializer.validated_data["email"],
+                password=serializer.validated_data["password"],
             )
             code = RedisDB.create_user_registration_code(user.email)
 
             EmailMessage(
-                    "UserCode",
-                    f"{settings.EMAIL_VERIFICATION_URL}/{user.email}/{code}",
-                    to=[user.email],
+                "UserCode",
+                f"{settings.EMAIL_VERIFICATION_URL}/{user.email}/{code}",
+                to=[user.email],
             ).send()
 
-            return Response(data={'email': user.email, 'password': user.password}, status=status.HTTP_200_OK)
+            return Response(
+                data={"email": user.email, "password": user.password},
+                status=status.HTTP_200_OK,
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -49,13 +51,12 @@ class UserRegistrationVerifyView(APIView):
             user.is_verified = True
             user.save()
             login(request, user)
-            return Response(data={'total': 'Success'}, status=status.HTTP_200_OK)
+            return Response(data={"total": "Success"}, status=status.HTTP_200_OK)
 
         return Response(Http404, status=status.HTTP_404_NOT_FOUND)
 
 
 class UserProfileView(APIView):
-
     User = get_user_model()
 
     def get_object(self, email):
@@ -64,7 +65,6 @@ class UserProfileView(APIView):
             return queryset
         except self.User.DoesNotExist:
             raise Http404
-
 
     def get(self, request, *args, **kwargs):
         queryset = get_object_or_404(get_user_model().objects, email=request.user.email)
