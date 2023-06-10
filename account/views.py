@@ -57,6 +57,7 @@ class UserRegistrationVerifyView(APIView):
 
 
 class UserProfileView(APIView):
+
     User = get_user_model()
 
     def get_object(self, email):
