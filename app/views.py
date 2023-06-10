@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from app.models import Food, Drink, Sauce, Dessert, BoxMix, Order, Dish, OrderItem
-from rest_framework import generics, mixins, status
+from rest_framework import generics, mixins, status, permissions
 
 from app.serializers import (
     FoodSerializer,
@@ -20,54 +20,65 @@ from app.serializers import (
     CartItemSerializer, CartItemAddSerializer,
 )
 
+
 class FoodPage(generics.ListAPIView):
     queryset = Food.objects.all()
     serializer_class = FoodSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class FoodDetailPage(generics.RetrieveAPIView):
     queryset = Food.objects.all()
     serializer_class = FoodSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class DrinkPage(generics.ListAPIView):
     queryset = Drink.objects.all()
     serializer_class = FoodSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class DrinkDetailPage(generics.RetrieveAPIView):
     queryset = Drink.objects.all()
     serializer_class = DrinkSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class SaucePage(generics.ListAPIView):
     queryset = Sauce.objects.all()
     serializer_class = SauceSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class SauceDetailPage(generics.RetrieveAPIView):
     queryset = Sauce.objects.all()
     serializer_class = SauceSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class DessertPage(generics.ListAPIView):
     queryset = Dessert.objects.all()
     serializer_class = DessertSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class DessertDetailPage(generics.RetrieveAPIView):
     queryset = Dessert.objects.all()
     serializer_class = DessertSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class BoxMixPage(generics.ListAPIView):
     queryset = BoxMix.objects.all()
     serializer_class = BoxMixSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class BoxMixDetailPage(generics.RetrieveAPIView):
     queryset = BoxMix.objects.all()
     serializer_class = BoxMixSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class CartPageView(
