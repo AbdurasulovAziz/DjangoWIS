@@ -60,18 +60,13 @@ class BoxMix(Dish):
         Dessert, on_delete=models.DO_NOTHING, blank=True, null=True
     )
 
-    def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
-    ):
-        self.price = self.get_price_with_sale()
-        super().save()
-
+    @property
     def get_price_with_sale(self):
         price_list = [self.box_food, self.box_dessert, self.box_sauce, self.box_drink]
         price = (
-                sum([element.price for element in price_list if element is not None])
-                / 100
-                * BOXMIX_SALE
+            sum([element.price for element in price_list if element is not None])
+            / 100
+            * BOXMIX_SALE
         )
         return price
 
@@ -82,11 +77,23 @@ class Order(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     status = models.CharField(choices=STATUS_CHOICES, default="Cart")
 
+    @property
+    def get_total_price(self):
+        return sum([item.get_total_price for item in self.items.all()])
+
     def __str__(self):
         return f"{self.user}"
 
 
 class OrderItem(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     count = models.IntegerField(default=0)
+
+    @property
+    def get_total_price(self):
+        return self.dish.price * self.count
+
+    @property
+    def get_dish_price(self):
+        return self.dish.price

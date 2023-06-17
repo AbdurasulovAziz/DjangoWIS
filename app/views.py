@@ -4,107 +4,147 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from app.forms import DishAddToCartForm
-from app.models import Food, Drink, Sauce, Dessert, BoxMix, Order, OrderItem
+from app.models import Food, Drink, Sauce, Dessert, BoxMix, Order, Dish, OrderItem
+from rest_framework import generics, mixins, status, permissions
+
+from app.serializers import (
+    FoodSerializer,
+    DrinkSerializer,
+    SauceSerializer,
+    DessertSerializer,
+    BoxMixSerializer,
+    CartSerializer,
+    CartItemSerializer, CartItemAddSerializer,
+)
 
 
-class DishAbstractPage(ListView):
-    template_name = "app/menu.html"
-    context_object_name = "data"
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        queryset = super().get_context_data()
-        queryset["form"] = DishAddToCartForm()
-        return queryset
+class FoodPage(generics.ListAPIView):
+    queryset = Food.objects.all()
+    serializer_class = FoodSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
-class DishDetailAbstractPage(DetailView):
-    template_name = "app/menu-detail.html"
-    context_object_name = "data"
+class FoodDetailPage(generics.RetrieveAPIView):
+    queryset = Food.objects.all()
+    serializer_class = FoodSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def get_queryset(self):
 
-        return self.model.objects.filter(id=self.kwargs["pk"]).values(
-            "name", "price", "description", "on_stop", "category", "spicy"
+class DrinkPage(generics.ListAPIView):
+    queryset = Drink.objects.all()
+    serializer_class = FoodSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class DrinkDetailPage(generics.RetrieveAPIView):
+    queryset = Drink.objects.all()
+    serializer_class = DrinkSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class SaucePage(generics.ListAPIView):
+    queryset = Sauce.objects.all()
+    serializer_class = SauceSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class SauceDetailPage(generics.RetrieveAPIView):
+    queryset = Sauce.objects.all()
+    serializer_class = SauceSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class DessertPage(generics.ListAPIView):
+    queryset = Dessert.objects.all()
+    serializer_class = DessertSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class DessertDetailPage(generics.RetrieveAPIView):
+    queryset = Dessert.objects.all()
+    serializer_class = DessertSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class BoxMixPage(generics.ListAPIView):
+    queryset = BoxMix.objects.all()
+    serializer_class = BoxMixSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class BoxMixDetailPage(generics.RetrieveAPIView):
+    queryset = BoxMix.objects.all()
+    serializer_class = BoxMixSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class CartPageView(
+    generics.GenericAPIView,
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.RetrieveModelMixin,
+):
+    serializer_class = CartSerializer
+
+    def get_object(self):
+        order, created = Order.objects.get_or_create(
+            user=self.request.user, status="Cart"
         )
+        return order
 
-
-class FoodPage(DishAbstractPage):
-    model = Food
-
-
-class FoodDetailPage(DishDetailAbstractPage):
-    model = Food
-
-
-class DrinkPage(DishAbstractPage):
-    model = Drink
-
-
-class DrinkDetailPage(DishDetailAbstractPage):
-    model = Drink
-
-
-class SaucePage(DishAbstractPage):
-    model = Sauce
-
-
-class SauceDetailPage(DishDetailAbstractPage):
-    model = Sauce
-
-
-class DessertPage(DishAbstractPage):
-    model = Dessert
-
-
-class DessertDetailPage(DishDetailAbstractPage):
-    model = Dessert
-
-
-class BoxMixPage(DishAbstractPage):
-    model = BoxMix
-
-
-class BoxMixDetailPage(DishDetailAbstractPage):
-    model = BoxMix
-
-
-class CartPageView(View):
     def get(self, request, *args, **kwargs):
-        queryset = Order.objects.filter(user=request.user, status="Cart").first()
+        return self.retrieve(request, *args, **kwargs)
 
-        try:
-            context = queryset.orderitem_set.all()
-        except AttributeError:
-            context = None
-
-        return render(request, "app/cart.html", {"context": context})
-
-    def post(self, request, *args, **kwargs):
-        order = Order.objects.filter(user=request.user, status="Cart").first()
-        if order is None:
-            return HttpResponseBadRequest(
-                "Cart can not be empty".format(request.method), status=400
-            )
-
-        order.status = "Sent"
-        order.save()
-        if EmailMessage(
-            "UserCode",
-            f"Ваш заказ будет доставлен в течении 15 минут",
-            to=[request.user.email],
-        ).send():
-            return HttpResponseRedirect(reverse("food-page"))
+    def patch(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
 
 
-class CartAddView(View):
-    def post(self, request, dish_id, *args, **kwargs):
-        order, is_created = Order.objects.get_or_create(
-            user=request.user, status="Cart"
+class CartItemView(
+    generics.GenericAPIView,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+):
+    serializer_class = CartItemSerializer
+
+    def get_object(self):
+        order_user, is_created = Order.objects.get_or_create(
+            user=self.request.user, status="Cart"
         )
-        order_item, is_created = order.orderitem_set.get_or_create(dish_id=dish_id)
-        order_item.count = request.POST.get("count")
-        order_item.save()
+        return order_user.items.filter(id=self.kwargs.get("dish_id")).first()
 
-        return HttpResponseRedirect(reverse("food-page"))
+    def get(self, request, *args, **kwargs):
+
+        if not self.get_object():
+            return Response(data={'Error': 'Object is not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        return self.retrieve(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+
+class CartAddView(APIView):
+
+    def post(self, request, dish_id, *args, **kwargs):
+        serializer = CartItemAddSerializer(data=request.data)
+        if serializer.is_valid():
+
+            order, order_is_created = Order.objects.get_or_create(
+                user=request.user, status="Cart"
+            )
+            order_item, item_is_created = order.items.get_or_create(dish_id=dish_id)
+            order_item.count = order_item.count + serializer.validated_data.get("count")
+            order_item.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
