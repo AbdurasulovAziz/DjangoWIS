@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "app.apps.AppConfig",
     "account.apps.AccountConfig",
     "rest_framework",
+    'celery'
 ]
 
 MIDDLEWARE = [
@@ -175,3 +176,4 @@ EMAIL_HOST_USER = dotenv.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = dotenv.get("EMAIL_HOST_PASSWORD")
 
 EMAIL_VERIFICATION_URL = dotenv.get("EMAIL_VERIFICATION_URL")
+

@@ -1,13 +1,12 @@
 from rest_framework import status
 from django.contrib.auth import get_user_model, login
-from django.core.mail import EmailMessage
+from .tasks import send_email
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from WISDjango import settings
 from WISDjango.redis import RedisDB
 from account.serializers import UserSerializer, UserDetailSerializer
@@ -26,11 +25,7 @@ class UserRegistrationView(APIView):
             )
             code = RedisDB.create_user_registration_code(user.email)
 
-            EmailMessage(
-                "UserCode",
-                f"{settings.EMAIL_VERIFICATION_URL}/{user.email}/{code}",
-                to=[user.email],
-            ).send()
+            send_email.delay(user.email, code)
 
             return Response(
                 data={"email": user.email, "password": user.password},
