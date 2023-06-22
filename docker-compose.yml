@@ -1,0 +1,73 @@
+version: '3.8'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    container_name: db
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
+    depends_on:
+      - rabbitmq
+
+  web:
+    build:
+      context: ./WISDjango
+      dockerfile: Dockerfile
+    container_name: web
+    ports:
+      - '8000:8000'
+    restart: always
+    command: >
+      sh -c " python3 manage.py migrate &&
+              uwsgi --ini ./uwsgi.ini "
+
+    depends_on:
+      - db
+      - redis
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - web
+    restart: always
+
+
+  rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  celery:
+    build:
+      context: ./WISDjango
+      dockerfile: Dockerfile
+    container_name: celery
+    command: celery -A WISDjango worker -l INFO
+    depends_on:
+      - db
+      - web
+      - rabbitmq
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq/
+
+
+
+
