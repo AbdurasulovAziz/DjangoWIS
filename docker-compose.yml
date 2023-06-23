@@ -26,8 +26,11 @@ services:
     ports:
       - '8000:8000'
     restart: always
+    volumes:
+      - static:/proj/static
     command: >
       sh -c " python3 manage.py migrate &&
+              python3 manage.py collectstatic --no-input --clear &&
               uwsgi --ini ./uwsgi.ini "
 
     depends_on:
@@ -42,7 +45,7 @@ services:
       - '80:80'
     container_name: nginx
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - static:/proj/static
     depends_on:
       - web
     restart: always
@@ -68,6 +71,7 @@ services:
     environment:
       - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq/
 
-
+volumes:
+  static:
 
 
